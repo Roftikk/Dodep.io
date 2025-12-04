@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | RustMe Client</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/db-config.js" defer></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo-icon">🦀</span>
+                <span class="logo-text">RustMe Client</span>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/#mods" class="nav-link">Моды</a>
+                <a href="/#functions" class="nav-link">Функции</a>
+                <a href="/admin/" class="nav-link">Админ-панель</a>
+                <a href="/account/" class="nav-link active">Личный кабинет</a>
+            </div>
+            <button class="btn-login" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Выйти
+            </button>
+        </div>
+    </nav>
+
+    <div class="account-container">
+        <div class="account-sidebar">
+            <div class="sidebar-user" id="sidebarUser">
+                <!-- Заполнится через JS -->
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-tab="overview">
+                    <i class="fas fa-home"></i> Обзор
+                </a>
+                <a href="#" class="sidebar-link" data-tab="subscription">
+                    <i class="fas fa-crown"></i> Подписка
+                </a>
+                <a href="#" class="sidebar-link" data-tab="keys">
+                    <i class="fas fa-key"></i> Мои ключи
+                </a>
+                <a href="#" class="sidebar-link" data-tab="stats">
+                    <i class="fas fa-chart-line"></i> Статистика
+                </a>
+                <a href="#" class="sidebar-link" data-tab="settings">
+                    <i class="fas fa-cog"></i> Настройки
+                </a>
+                <a href="#" class="sidebar-link" data-tab="support">
+                    <i class="fas fa-headset"></i> Поддержка
+                </a>
+            </nav>
+        </div>
+
+        <div class="account-content">
+            <!-- Вкладка: Обзор -->
+            <div class="account-tab active" id="overviewTab">
+                <div class="tab-header">
+                    <h2>Обзор аккаунта</h2>
+                    <p id="welcomeMessage">Загрузка...</p>
+                </div>
+                
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="overview-icon" style="background: rgba(37, 99, 235, 0.1); color: #2563eb;">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="overview-info">
+                            <div class="overview-label">Текущая подписка</div>
+                            <div class="overview-value" id="currentSub">Загрузка...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <div class="overview-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="overview-info">
+                            <div class="overview-label">Подписка активна до</div>
+                            <div class="overview-value" id="subExpires">Загрузка...</div>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <div class="overview-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="overview-info">
+                            <div class="overview-label">Активных ключей</div>
+                            <div class="overview-value" id="activeKeys">0</div>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <div class="overview-icon" style="background: rgba(239, 68, 68, 0.1); color: #ef4444;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="overview-info">
+                            <div class="overview-label">Время в игре</div>
+                            <div class="overview-value" id="playTime">0ч 0м</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <h3>Быстрые действия</h3>
+                    <div class="actions-grid">
+                        <button class="action-btn" id="renewSubBtn">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Продлить подписку</span>
+                        </button>
+                        <button class="action-btn" id="downloadClientBtn">
+                            <i class="fas fa-download"></i>
+                            <span>Скачать клиент</span>
+                        </button>
+                        <button class="action-btn" id="getSupportBtn">
+                            <i class="fas fa-headset"></i>
+                            <span>Написать в поддержку</span>
+                        </button>
+                        <button class="action-btn" id="inviteFriendBtn">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Пригласить друга</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3>Последняя активность</h3>
+                    <div class="activity-list" id="activityList">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">Вход в систему</div>
+                                <div class="activity-time" id="lastLoginTime">Загрузка...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка: Подписка -->
+            <div class="account-tab" id="subscriptionTab">
+                <div class="tab-header">
+                    <h2>Управление подпиской</h2>
+                    <p>Информация о вашей текущей подписке и доступных опциях</p>
+                </div>
+                
+                <div class="subscription-info-card">
+                    <div class="subscription-header">
+                        <div class="sub-icon">👑</div>
+                        <div>
+                            <h3 id="subType">RustMe Full</h3>
+                            <div class="sub-status" id="subStatus">Активна</div>
+                        </div>
+                    </div>
+                    
+                    <div class="subscription-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Дата активации:</div>
+                            <div class="detail-value" id="subStartDate">01.01.2024</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Дата окончания:</div>
+                            <div class="detail-value" id="subEndDate">01.02.2024</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Осталось дней:</div>
+                            <div class="detail-value" id="subDaysLeft">30</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Стоимость:</div>
+                            <div class="detail-value" id="subPrice">$199</div>
+                        </div>
+                    </div>
+                    
+                    <div class="subscription-features">
+                        <h4>Доступные функции:</h4>
+                        <div class="features-grid" id="subFeatures">
+                            <!-- Заполнится через JS -->
+                        </div>
+                    </div>
+                    
+                    <div class="subscription-actions">
+                        <button class="btn-primary" id="upgradeSubBtn">
+                            <i class="fas fa-arrow-up"></i> Улучшить подписку
+                        </button>
+                        <button class="btn-secondary" id="cancelSubBtn">
+                            <i class="fas fa-ban"></i> Отменить автопродление
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="available-plans">
+                    <h3>Доступные тарифы</h3>
+                    <div class="plans-grid">
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <h4>RustMe Basic</h4>
+                                <div class="plan-price">$99 <span>/месяц</span></div>
+                            </div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> ESP и Радар</li>
+                                <li><i class="fas fa-check"></i> Отображение лута</li>
+                                <li><i class="fas fa-times"></i> Aimbot</li>
+                                <li><i class="fas fa-times"></i> No Recoil</li>
+                            </ul>
+                            <button class="btn-plan" data-plan="basic">Выбрать</button>
+                        </div>
+                        
+                        <div class="plan-card featured">
+                            <div class="plan-badge">ПОПУЛЯРНО</div>
+                            <div class="plan-header">
+                                <h4>RustMe Full</h4>
+                                <div class="plan-price">$199 <span>/месяц</span></div>
+                            </div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> Все функции Basic</li>
+                                <li><i class="fas fa-check"></i> Умный Aimbot</li>
+                                <li><i class="fas fa-check"></i> No Recoil & Spread</li>
+                                <li><i class="fas fa-check"></i> Приоритетная поддержка</li>
+                            </ul>
+                            <button class="btn-plan featured" data-plan="full">Выбрать</button>
+                        </div>
+                        
+                        <div class="plan-card">
+                            <div class="plan-header">
+                                <h4>RustMe Forever</h4>
+                                <div class="plan-price">$499 <span>единоразово</span></div>
+                            </div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> Все функции Full</li>
+                                <li><i class="fas fa-check"></i> Пожизненный доступ</li>
+                                <li><i class="fas fa-check"></i> Все будущие обновления</li>
+                                <li><i class="fas fa-check"></i> VIP статус</li>
+                            </ul>
+                            <button class="btn-plan" data-plan="forever">Выбрать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка: Мои ключи -->
+            <div class="account-tab" id="keysTab">
+                <div class="tab-header">
+                    <h2>Мои ключи активации</h2>
+                    <p>Управление ключами доступа к клиенту</p>
+                </div>
+                
+                <div class="keys-container">
+                    <div class="keys-actions">
+                        <button class="btn-primary" id="generateKeyBtn">
+                            <i class="fas fa-plus"></i> Сгенерировать ключ
+                        </button>
+                        <button class="btn-secondary" id="importKeyBtn">
+                            <i class="fas fa-file-import"></i> Импортировать ключ
+                        </button>
+                    </div>
+                    
+                    <div class="keys-list" id="keysList">
+                        <!-- Заполнится через JS -->
+                    </div>
+                    
+                    <div class="keys-info">
+                        <div class="info-icon">ℹ️</div>
+                        <div class="info-content">
+                            <h4>Информация о ключах</h4>
+                            <p>• Каждый ключ активируется только на одном компьютере</p>
+                            <p>• При переустановке системы используйте тот же ключ</p>
+                            <p>• Ключи действительны до окончания подписки</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Вкладка: Статистика -->
+            <div class="account-tab" id="statsTab">
+                <!-- Содержимое вкладки статистики -->
+            </div>
+
+            <!-- Вкладка: Настройки -->
+            <div class="account-tab" id="settingsTab">
+                <!-- Содержимое вкладки настроек -->
+            </div>
+
+            <!-- Вкладка: Поддержка -->
+            <div class="account-tab" id="supportTab">
+                <!-- Содержимое вкладки поддержки -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+    class AccountManager {
+        constructor() {
+            this.currentUser = null;
+            this.userData = null;
+            this.init();
+        }
+
+        async init() {
+            await this.checkAuth();
+            this.loadUserData();
+            this.bindEvents();
+        }
+
+        async checkAuth() {
+            const session = localStorage.getItem('rustme_session');
+            if (!session) {
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                const sessionData = JSON.parse(atob(session));
+                if (Date.now() > sessionData.expires) {
+                    localStorage.removeItem('rustme_session');
+                    window.location.href = '/';
+                    return;
+                }
+
+                this.currentUser = sessionData.user;
+                
+                // Загружаем данные пользователя из БД
+                const data = await window.db.fetchData();
+                this.userData = data.users.find(u => u.id === this.currentUser.id);
+                
+                if (!this.userData) {
+                    this.logout();
+                    return;
+                }
+
+                this.updateUI();
+                
+            } catch (error) {
+                console.error('Auth error:', error);
+                this.logout();
+            }
+        }
+
+        updateUI() {
+            // Обновляем информацию в сайдбаре
+            const roleData = this.getRoleData(this.userData.role);
+            document.getElementById('sidebarUser').innerHTML = `
+                <div class="user-avatar" style="background: ${roleData.color}">
+                    ${roleData.emoji}
+                </div>
+                <div class="user-info">
+                    <div class="user-name">${this.userData.username}</div>
+                    <div class="user-role" style="color: ${roleData.color}">
+                        ${roleData.emoji} ${this.userData.role}
+                    </div>
+                </div>
+            `;
+
+            // Обновляем вкладку обзора
+            this.updateOverview();
+        }
+
+        getRoleData(role) {
+            const roles = {
+                'DEVELOPER': { emoji: '👑', color: '#FFD700' },
+                'OVERSEER': { emoji: '🔱', color: '#FF6B6B' },
+                'ALPHA': { emoji: '⚡', color: '#4ECDC4' },
+                'MODER': { emoji: '🛡️', color: '#45B7D1' },
+                'FULL': { emoji: '💎', color: '#96CEB4' },
+                'LEGIT': { emoji: '🎭', color: '#FECA57' },
+                'BASIC': { emoji: '🔓', color: '#54A0FF' },
+                'LITE': { emoji: '⚡', color: '#5F27CD' },
+                'TESTER': { emoji: '🧪', color: '#00D2D3' },
+                'USER': { emoji: '👤', color: '#C8D6E5' }
+            };
+            return roles[role] || roles.USER;
+        }
+
+        updateOverview() {
+            // Приветственное сообщение
+            const hour = new Date().getHours();
+            let greeting = 'Доброй ночи';
+            if (hour >= 6 && hour < 12) greeting = 'Доброе утро';
+            else if (hour >= 12 && hour < 18) greeting = 'Добрый день';
+            else if (hour >= 18 && hour < 23) greeting = 'Добрый вечер';
+            
+            document.getElementById('welcomeMessage').textContent = 
+                `${greeting}, ${this.userData.username}!`;
+
+            // Информация о подписке
+            document.getElementById('currentSub').textContent = 
+                this.userData.subscription === 'forever' ? 'Навсегда' : 
+                this.userData.subscription ? this.userData.subscription.charAt(0).toUpperCase() + 
+                this.userData.subscription.slice(1) : 'Нет подписки';
+
+            // Дата окончания подписки
+            const created = new Date(this.userData.createdAt);
+            let expires = new Date(created);
+            
+            switch(this.userData.subscription) {
+                case 'month':
+                    expires.setMonth(expires.getMonth() + 1);
+                    break;
+                case '3month':
+                    expires.setMonth(expires.getMonth() + 3);
+                    break;
+                case 'year':
+                    expires.setFullYear(expires.getFullYear() + 1);
+                    break;
+                case 'forever':
+                    expires = new Date('2099-12-31');
+                    break;
+                default:
+                    expires = 'Не установлено';
+            }
+            
+            document.getElementById('subExpires').textContent = 
+                expires instanceof Date ? expires.toLocaleDateString('ru-RU') : expires;
+
+            // Время последнего входа
+            if (this.userData.lastLogin) {
+                const lastLogin = new Date(this.userData.lastLogin);
+                document.getElementById('lastLoginTime').textContent = 
+                    lastLogin.toLocaleString('ru-RU');
+            }
+        }
+
+        bindEvents() {
+            // Навигация по вкладкам
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tab = link.dataset.tab;
+                    
+                    // Обновляем активные элементы
+                    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    document.querySelectorAll('.account-tab').forEach(t => t.classList.remove('active'));
+                    document.getElementById(`${tab}Tab`).classList.add('active');
+                });
+            });
+
+            // Быстрые действия
+            document.getElementById('renewSubBtn')?.addEventListener('click', () => {
+                window.open('https://t.me/dadepbabki', '_blank');
+            });
+
+            document.getElementById('downloadClientBtn')?.addEventListener('click', () => {
+                if (this.userData.subscription && this.userData.subscription !== 'none') {
+                    // В реальном приложении здесь должна быть ссылка на скачивание
+                    alert('Клиент доступен для скачивания в Telegram канале');
+                    window.open('https://t.me/dadepbabki', '_blank');
+                } else {
+                    alert('Для скачивания клиента необходима активная подписка');
+                }
+            });
+
+            document.getElementById('getSupportBtn')?.addEventListener('click', () => {
+                window.open('https://t.me/dadepbabki', '_blank');
+            });
+
+            document.getElementById('inviteFriendBtn')?.addEventListener('click', () => {
+                const inviteCode = `RUSTME-${this.userData.id}-INVITE`;
+                navigator.clipboard.writeText(inviteCode);
+                alert(`Код приглашения ${inviteCode} скопирован! Друг получит 10% скидку.`);
+            });
+
+            // Выход из системы
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                this.logout();
+            });
+        }
+
+        logout() {
+            localStorage.removeItem('rustme_session');
+            window.location.href = '/';
+        }
+    }
+
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', async () => {
+        // Ждем загрузки конфига базы данных
+        if (!window.db) {
+            const script = document.createElement('script');
+            script.src = '/db-config.js';
+            script.onload = () => new AccountManager();
+            document.head.appendChild(script);
+        } else {
+            new AccountManager();
+        }
+    });
+    </script>
+
+    <style>
+    .account-container {
+        display: flex;
+        min-height: calc(100vh - 80px);
+        margin-top: 80px;
+    }
+
+    .account-sidebar {
+        width: 280px;
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 2rem 1rem;
+        position: fixed;
+        height: calc(100vh - 80px);
+        overflow-y: auto;
+    }
+
+    .sidebar-user {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .user-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        flex-shrink: 0;
+    }
+
+    .user-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .user-name {
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .user-role {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .sidebar-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .sidebar-link {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        color: var(--gray);
+        text-decoration: none;
+        border-radius: 0.75rem;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+        background: var(--gradient-primary);
+        color: white;
+    }
+
+    .sidebar-link i {
+        width: 20px;
+        text-align: center;
+    }
+
+    .account-content {
+        flex: 1;
+        margin-left: 280px;
+        padding: 2rem;
+        background: var(--darker);
+        min-height: calc(100vh - 80px);
+    }
+
+    .account-tab {
+        display: none;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .account-tab.active {
+        display: block;
+    }
+
+    .tab-header {
+        margin-bottom: 2rem;
+    }
+
+    .tab-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .tab-header p {
+        color: var(--gray);
+        font-size: 1.125rem;
+    }
+
+    .overview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .overview-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .overview-card:hover {
+        transform: translateY(-3px);
+        border-color: var(--primary);
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .overview-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+
+    .overview-info {
+        flex: 1;
+    }
+
+    .overview-label {
+        font-size: 0.875rem;
+        color: var(--gray);
+        margin-bottom: 0.25rem;
+    }
+
+    .overview-value {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--light);
+    }
+
+    .quick-actions {
+        margin-bottom: 3rem;
+    }
+
+    .quick-actions h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .action-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        color: var(--light);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .action-btn:hover {
+        background: var(--gradient-primary);
+        border-color: var(--primary);
+        transform: translateY(-2px);
+    }
+
+    .action-btn i {
+        font-size: 1.25rem;
+    }
+
+    .action-btn span {
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    .recent-activity {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1rem;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .recent-activity h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .activity-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 0.75rem;
+    }
+
+    .activity-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .activity-content {
+        flex: 1;
+    }
+
+    .activity-title {
+        font-weight: 500;
+        margin-bottom: 0.25rem;
+    }
+
+    .activity-time {
+        font-size: 0.875rem;
+        color: var(--gray);
+    }
+
+    /* Стили для других вкладок */
+    .subscription-info-card {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .subscription-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .sub-icon {
+        font-size: 3rem;
+    }
+
+    .subscription-header h3 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .sub-status {
+        display: inline-block;
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
+        padding: 0.25rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+
+    .subscription-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .detail-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .detail-label {
+        font-size: 0.875rem;
+        color: var(--gray);
+    }
+
+    .detail-value {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--light);
+    }
+
+    .subscription-features {
+        margin-bottom: 2rem;
+    }
+
+    .subscription-features h4 {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .subscription-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .available-plans {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .available-plans h3 {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .plans-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+    }
+
+    .plan-card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        padding: 2rem;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .plan-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--primary);
+    }
+
+    .plan-card.featured {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(124, 58, 237, 0.1));
+        border: 2px solid var(--primary);
+    }
+
+    .plan-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--gradient-primary);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 2rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .plan-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .plan-header h4 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .plan-price {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 0.25rem;
+    }
+
+    .plan-price span {
+        font-size: 1rem;
+        color: var(--gray);
+        font-weight: normal;
+    }
+
+    .plan-features {
+        list-style: none;
+        margin-bottom: 2rem;
+    }
+
+    .plan-features li {
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--gray);
+    }
+
+    .plan-features li i {
+        color: var(--success);
+    }
+
+    .plan-features li i.fa-times {
+        color: var(--danger);
+    }
+
+    .btn-plan {
+        width: 100%;
+        padding: 1rem;
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-plan:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-plan.featured {
+        animation: pulse 2s infinite;
+    }
+
+    .keys-container {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .keys-actions {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .keys-list {
+        margin-bottom: 2rem;
+    }
+
+    .keys-info {
+        display: flex;
+        gap: 1rem;
+        background: rgba(37, 99, 235, 0.1);
+        padding: 1.5rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(37, 99, 235, 0.2);
+    }
+
+    .info-icon {
+        font-size: 2rem;
+        flex-shrink: 0;
+    }
+
+    .info-content h4 {
+        font-size: 1.125rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-content p {
+        color: var(--gray);
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
+
+    @media (max-width: 1024px) {
+        .account-sidebar {
+            position: static;
+            width: 100%;
+            height: auto;
+        }
+        
+        .account-content {
+            margin-left: 0;
+        }
+        
+        .account-container {
+            flex-direction: column;
+        }
+    }
+    </style>
+</body>
+</html>

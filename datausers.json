@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "username": "RoftekDEV",
+    "password": "dimok2016",
+    "role": "Developer",
+    "subscription": "forever",
+    "key": "DEV-ROFTEK-2024-FOREVER",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "balance": 9999
+  }
+]

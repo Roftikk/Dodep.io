@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | RustMe Client</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="logo-icon">🦀</span>
+                <span class="logo-text">Админ-панель</span>
+            </div>
+            <div class="nav-menu">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/account/" class="nav-link">Личный кабинет</a>
+                <a href="/admin/" class="nav-link active">Админ-панель</a>
+            </div>
+            <button class="btn-login" id="logoutBtn">Выйти</button>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <div class="admin-sidebar">
+            <div class="admin-user" id="adminUserInfo">
+                <!-- Заполнится через JS -->
+            </div>
+            <nav class="admin-nav">
+                <a href="#" class="admin-nav-link active" data-section="keys">
+                    <i class="fas fa-key"></i> Генератор ключей
+                </a>
+                <a href="#" class="admin-nav-link" data-section="users">
+                    <i class="fas fa-users"></i> Пользователи
+                </a>
+                <a href="#" class="admin-nav-link" data-section="stats">
+                    <i class="fas fa-chart-bar"></i> Статистика
+                </a>
+                <a href="#" class="admin-nav-link" data-section="settings">
+                    <i class="fas fa-cog"></i> Настройки
+                </a>
+            </nav>
+        </div>
+
+        <div class="admin-content">
+            <!-- Секция генератора ключей -->
+            <section class="admin-section active" id="keysSection">
+                <h2>Генератор ключей</h2>
+                <div class="generator-card">
+                    <div class="form-group">
+                        <label>Тип ключа</label>
+                        <select id="keyType" class="form-select">
+                            <option value="basic">Basic ($99)</option>
+                            <option value="full">Full ($199)</option>
+                            <option value="legit">Legit ($79)</option>
+                            <option value="lite">Lite ($89)</option>
+                            <option value="tester">Tester (бесплатно)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Срок действия</label>
+                        <select id="keyDuration" class="form-select">
+                            <option value="day">1 день</option>
+                            <option value="3days">3 дня</option>
+                            <option value="week">1 неделя</option>
+                            <option value="month">1 месяц</option>
+                            <option value="forever">Навсегда</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Количество ключей</label>
+                        <input type="number" id="keyCount" min="1" max="100" value="1" class="form-input">
+                    </div>
+                    <button class="btn-primary" id="generateKeysBtn">
+                        <i class="fas fa-magic"></i> Сгенерировать ключи
+                    </button>
+                </div>
+
+                <div class="generated-keys" id="generatedKeys">
+                    <!-- Сгенерированные ключи появятся здесь -->
+                </div>
+            </section>
+
+            <!-- Секция пользователей -->
+            <section class="admin-section" id="usersSection">
+                <h2>Управление пользователями</h2>
+                <div class="users-table-container">
+                    <table class="users-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Имя пользователя</th>
+                                <th>Роль</th>
+                                <th>Подписка</th>
+                                <th>Дата регистрации</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Заполнится через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Секция статистики -->
+            <section class="admin-section" id="statsSection">
+                <h2>Статистика системы</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-value" id="totalUsers">0</div>
+                        <div class="stat-label">Всего пользователей</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-value" id="totalRevenue">$0</div>
+                        <div class="stat-label">Общая выручка</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔑</div>
+                        <div class="stat-value" id="activeKeys">0</div>
+                        <div class="stat-label">Активные ключи</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-value" id="todayUsers">0</div>
+                        <div class="stat-label">Новые сегодня</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Секция настроек -->
+            <section class="admin-section" id="settingsSection">
+                <h2>Настройки системы</h2>
+                <div class="settings-card">
+                    <div class="form-group">
+                        <label>Название сайта</label>
+                        <input type="text" id="siteName" value="RustMe Client" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Telegram поддержки</label>
+                        <input type="text" id="telegramSupport" value="@dadepbabki" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Цветовая тема</label>
+                        <select id="themeColor" class="form-select">
+                            <option value="blue">Синяя</option>
+                            <option value="purple">Фиолетовая</option>
+                            <option value="green">Зеленая</option>
+                            <option value="red">Красная</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" id="saveSettingsBtn">
+                        <i class="fas fa-save"></i> Сохранить настройки
+                    </button>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+    <script>
+        class AdminPanel {
+            constructor() {
+                this.currentUser = JSON.parse(localStorage.getItem('rustme_current_user') || 'null');
+                if (!this.currentUser || this.currentUser.role !== 'Developer') {
+                    window.location.href = '/';
+                    return;
+                }
+                this.init();
+            }
+
+            init() {
+                this.renderUserInfo();
+                this.loadUsers();
+                this.loadStats();
+                this.bindEvents();
+            }
+
+            renderUserInfo() {
+                document.getElementById('adminUserInfo').innerHTML = `
+                    <div class="admin-user-card">
+                        <div class="admin-user-avatar">👑</div>
+                        <div class="admin-user-details">
+                            <div class="admin-user-name">${this.currentUser.username}</div>
+                            <div class="admin-user-role">Developer</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            loadUsers() {
+                const users = JSON.parse(localStorage.getItem('rustme_users') || '[]');
+                const tbody = document.getElementById('usersTableBody');
+                tbody.innerHTML = '';
+
+                users.forEach(user => {
+                    const tr = document.createElement('tr');
+                    
+                    const roles = {
+                        'Developer': '👑 Developer',
+                        'НадзирательЮТ': '🔱 НадзирательЮТ',
+                        'Alpha': '⚡ Alpha',
+                        'Moder': '🛡️ Moder',
+                        'Full': '💎 Full',
+                        'Legit': '🎭 Legit',
+                        'Basic': '🔓 Basic',
+                        'Lite': '⚡ Lite',
+                        'Tester': '🧪 Tester',
+                        'Пользователь': '👤 Пользователь'
+                    };
+
+                    tr.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${roles[user.role] || user.role}</td>
+                        <td>${user.subscription || 'Нет'}</td>
+                        <td>${new Date(user.createdAt).toLocaleDateString('ru-RU')}</td>
+                        <td>
+                            <button class="btn-action edit-user" data-id="${user.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            ${user.role !== 'Developer' ? `
+                                <button class="btn-action delete-user" data-id="${user.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            ` : ''}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                // Добавляем обработчики событий
+                document.querySelectorAll('.edit-user').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.editUser(e.target.closest('button').dataset.id));
+                });
+
+                document.querySelectorAll('.delete-user').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.deleteUser(e.target.closest('button').dataset.id));
+                });
+            }
+
+            loadStats() {
+                const users = JSON.parse(localStorage.getItem('rustme_users') || '[]');
+                
+                // Всего пользователей
+                document.getElementById('totalUsers').textContent = users.length;
+                
+                // Активные ключи
+                const activeKeys = users.filter(u => u.key).length;
+                document.getElementById('activeKeys').textContent = activeKeys;
+                
+                // Новые сегодня
+                const today = new Date().toDateString();
+                const todayUsers = users.filter(u => 
+                    new Date(u.createdAt).toDateString() === today
+                ).length;
+                document.getElementById('todayUsers').textContent = todayUsers;
+                
+                // Общая выручка
+                const revenue = users.reduce((sum, user) => {
+                    const prices = {
+                        'basic': 99, 'full': 199, 'legit': 79, 'lite': 89
+                    };
+                    return sum + (prices[user.subscription?.toLowerCase()] || 0);
+                }, 0);
+                document.getElementById('totalRevenue').textContent = `$${revenue}`;
+            }
+
+            generateKey() {
+                const type = document.getElementById('keyType').value;
+                const duration = document.getElementById('keyDuration').value;
+                const count = parseInt(document.getElementById('keyCount').value);
+                
+                const keys = [];
+                const types = {
+                    'basic': 'RUSTME-BASIC',
+                    'full': 'RUSTME-FULL',
+                    'legit': 'RUSTME-LEGIT',
+                    'lite': 'RUSTME-LITE',
+                    'tester': 'RUSTME-TESTER'
+                };
+                
+                const durations = {
+                    'day': '1D',
+                    '3days': '3D',
+                    'week': '1W',
+                    'month': '1M',
+                    'forever': 'FOREVER'
+                };
+                
+                for (let i = 0; i < count; i++) {
+                    const random = Math.random().toString(36).substring(2, 10).toUpperCase();
+                    const key = `${types[type]}-${durations[duration]}-${random}-${Date.now().toString(36).toUpperCase()}`;
+                    keys.push(key);
+                }
+                
+                this.displayKeys(keys);
+            }
+
+            displayKeys(keys) {
+                const container = document.getElementById('generatedKeys');
+                container.innerHTML = '<h3>Сгенерированные ключи:</h3>';
+                
+                keys.forEach(key => {
+                    const keyElement = document.createElement('div');
+                    keyElement.className = 'key-item';
+                    keyElement.innerHTML = `
+                        <code>${key}</code>
+                        <button class="btn-copy" data-key="${key}">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    `;
+                    container.appendChild(keyElement);
+                });
+                
+                // Добавляем обработчики копирования
+                document.querySelectorAll('.btn-copy').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const key = e.target.closest('button').dataset.key;
+                        navigator.clipboard.writeText(key);
+                        alert('Ключ скопирован в буфер обмена!');
+                    });
+                });
+            }
+
+            editUser(userId) {
+                const users = JSON.parse(localStorage.getItem('rustme_users') || '[]');
+                const user = users.find(u => u.id == userId);
+                
+                if (user) {
+                    const newRole = prompt('Введите новую роль для пользователя:', user.role);
+                    if (newRole && newRole !== user.role) {
+                        user.role = newRole;
+                        localStorage.setItem('rustme_users', JSON.stringify(users));
+                        this.loadUsers();
+                        alert('Роль обновлена!');
+                    }
+                }
+            }
+
+            deleteUser(userId) {
+                if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+                    let users = JSON.parse(localStorage.getItem('rustme_users') || '[]');
+                    users = users.filter(u => u.id != userId);
+                    localStorage.setItem('rustme_users', JSON.stringify(users));
+                    this.loadUsers();
+                    this.loadStats();
+                    alert('Пользователь удален!');
+                }
+            }
+
+            bindEvents() {
+                // Навигация
+                document.querySelectorAll('.admin-nav-link').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const section = link.dataset.section;
+                        
+                        // Обновляем активные элементы
+                        document.querySelectorAll('.admin-nav-link').forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                        
+                        document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+                        document.getElementById(`${section}Section`).classList.add('active');
+                    });
+                });
+
+                // Генерация ключей
+                document.getElementById('generateKeysBtn').addEventListener('click', () => {
+                    this.generateKey();
+                });
+
+                // Сохранение настроек
+                document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+                    alert('Настройки сохранены!');
+                });
+
+                // Выход
+                document.getElementById('logoutBtn').addEventListener('click', () => {
+                    localStorage.removeItem('rustme_current_user');
+                    window.location.href = '/';
+                });
+            }
+        }
+
+        // Запуск при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdminPanel();
+        });
+    </script>
+
+    <style>
+        .admin-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+            margin-top: 80px;
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background: rgba(15, 23, 42, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem 1rem;
+        }
+
+        .admin-user-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .admin-user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .admin-user-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .admin-user-role {
+            font-size: 0.875rem;
+            color: #FFD700;
+            font-weight: 500;
+        }
+
+        .admin-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .admin-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-nav-link:hover,
+        .admin-nav-link.active {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .admin-nav-link i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .admin-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .generator-card,
+        .settings-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            margin-top: 1.5rem;
+        }
+
+        .form-select,
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: var(--light);
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .form-select:focus,
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .generated-keys {
+            margin-top: 2rem;
+        }
+
+        .key-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .key-item code {
+            font-family: monospace;
+            font-size: 0.875rem;
+            word-break: break-all;
+        }
+
+        .btn-copy {
+            background: var(--gradient-primary);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        .users-table-container {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .users-table th,
+        .users-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .users-table th {
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .users-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-action {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--light);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-right: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-action:hover {
+            background: var(--gradient-primary);
+            border-color: var(--primary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--gradient-card);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+    </style>
+</body>
+</html>

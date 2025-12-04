@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена | RustMe Client</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <div class="error-icon">🔍</div>
+            <h1 class="error-title">404</h1>
+            <h2 class="error-subtitle">Страница не найдена</h2>
+            <p class="error-description">
+                Извините, запрашиваемая страница не существует или была перемещена.
+            </p>
+            <div class="error-actions">
+                <a href="/" class="btn-primary">На главную</a>
+                <a href="/account/" class="btn-secondary">Личный кабинет</a>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--darker);
+        }
+
+        .error-content {
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .error-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .error-title {
+            font-size: 6rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .error-subtitle {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .error-description {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-size: 1.125rem;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+    </style>
+</body>
+</html>

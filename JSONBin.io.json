@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "DeveloperAccount",
+      "password": "pbkdf2_hashed_dimok2016",
+      "email": "dev@rustme.com",
+      "role": "DEVELOPER",
+      "subscription": "forever",
+      "key": "DEV-ROFTEK-FOREVER-2024",
+      "balance": 99999,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "lastLogin": null,
+      "ip": "127.0.0.1",
+      "permissions": ["all"]
+    }
+  ],
+  "subscriptions": [],
+  "logs": [],
+  "settings": {
+    "siteName": "RustMe Client",
+    "telegramSupport": "@dadepbabki",
+    "theme": "blue",
+    "maintenance": false,
+    "registration": true,
+    "prices": {
+      "basic": 99,
+      "full": 199,
+      "legit": 79,
+      "lite": 89,
+      "tester": 0
+    }
+  }
+}
